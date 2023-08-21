@@ -18,13 +18,10 @@ const getFirebotScriptsFolderPath = () => {
   } else if (process.platform === "darwin") {
     appDataFolderPath = path.join(
       process.env.HOME,
-      "/Library/Application Support"
+      "/Library/Application Support",
     );
   } else if (process.platform === "linux") {
-    appDataFolderPath = path.join(
-      process.env.HOME,
-      "/.config"
-    );
+    appDataFolderPath = path.join(process.env.HOME, "/.config");
   } else {
     throw new Error("Unsupported OS!");
   }
@@ -32,7 +29,7 @@ const getFirebotScriptsFolderPath = () => {
   const firebotDataFolderPath = path.join(appDataFolderPath, "/Firebot/v5/");
   const firebotGlobalSettings = require(path.join(
     firebotDataFolderPath,
-    "global-settings.json"
+    "global-settings.json",
   ));
 
   if (
@@ -47,7 +44,7 @@ const getFirebotScriptsFolderPath = () => {
 
   const scriptsFolderPath = path.join(
     firebotDataFolderPath,
-    `/profiles/${activeProfile}/scripts/`
+    `/profiles/${activeProfile}/scripts/`,
   );
   return scriptsFolderPath;
 };
@@ -60,7 +57,7 @@ const main = async () => {
   const srcScriptFilePath = path.resolve(`./dist/${scriptName}`);
   const destScriptFilePath = path.join(
     firebotScriptsFolderPath,
-    `${scriptName}`
+    `${scriptName}`,
   );
 
   await fs.copyFile(srcScriptFilePath, destScriptFilePath);
