@@ -1,5 +1,5 @@
 {
-  "name": "firebot-custom-script-starter",
+  "name": "firebot-raid-chat-alert",
   "scriptOutputName": "raid-chat-alert",
   "version": "1.0.0",
   "description": "A starter Firebot custom script",
