@@ -12,8 +12,8 @@
     "format": "npx prettier --write .",
     "check-format": "npx prettier --check ."
   },
-  "author": "ebiggz",
-  "license": "GNU3",
+  "author": "Wissididom",
+  "license": "MIT",
   "devDependencies": {
     "@crowbartools/firebot-custom-scripts-types": "^5.53.2",
     "@types/node": "^20.5.6",
