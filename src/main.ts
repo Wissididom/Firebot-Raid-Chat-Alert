@@ -54,9 +54,6 @@ const script: Firebot.CustomScript<Params> = {
     };
     client.onmessage = async (event: any) => {
       let data = JSON.parse(event.data);
-      logger.info(
-        "[Firebot Raid Chat Alert] EventSub Data: " + JSON.stringify(data),
-      );
       if (data.metadata?.message_type == "session_welcome") {
         logger.info(
           "[Firebot Raid Chat Alert] session_welcome: " + JSON.stringify(data),
@@ -108,14 +105,12 @@ const script: Firebot.CustomScript<Params> = {
               logger.error("Error", err.message);
             }
           });
-      }
-      if (data.metadata?.message_type == "session_keepalive") {
+      } else if (data.metadata?.message_type == "session_keepalive") {
         logger.info(
           "[Firebot Raid Chat Alert] session_keepalive: " +
             JSON.stringify(data),
         );
-      }
-      if (data.payload?.subscription?.type == "channel.raid") {
+      } else if (data.payload?.subscription?.type == "channel.raid") {
         logger.info(
           "[Firebot Raid Chat Alert] channel.raid: " + JSON.stringify(data),
         );
@@ -184,6 +179,10 @@ const script: Firebot.CustomScript<Params> = {
               logger.error("Error", err.message);
             }
           });
+      } else {
+        logger.info(
+          "[Firebot Raid Chat Alert] EventSub Data: " + JSON.stringify(data),
+        );
       }
       keepaliveTimeoutSeconds.start = Date.now() / 1000;
       keepaliveTimeoutSeconds.end =

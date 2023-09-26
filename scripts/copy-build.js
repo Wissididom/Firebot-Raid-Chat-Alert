@@ -27,10 +27,9 @@ const getFirebotScriptsFolderPath = () => {
   }
 
   const firebotDataFolderPath = path.join(appDataFolderPath, "/Firebot/v5/");
-  const firebotGlobalSettings = require(path.join(
-    firebotDataFolderPath,
-    "global-settings.json",
-  ));
+  const firebotGlobalSettings = require(
+    path.join(firebotDataFolderPath, "global-settings.json"),
+  );
 
   if (
     firebotGlobalSettings == null ||
