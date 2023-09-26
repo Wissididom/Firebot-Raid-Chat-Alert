@@ -126,8 +126,7 @@ const script: Firebot.CustomScript<Params> = {
             JSON.stringify(data),
         );
         logger.info(
-          `[Firebot Raid Chat Alert] Reconnecting to ${data.payload.session.reconnect_url}` +
-            JSON.stringify(data),
+          `[Firebot Raid Chat Alert] Reconnecting to ${data.payload.session.reconnect_url}`,
         );
         client = new WebSocket(data.payload.session.reconnect_url);
         client.onopen = onopen;
