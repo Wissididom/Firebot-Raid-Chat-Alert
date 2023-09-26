@@ -14,6 +14,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Prettier
-        uses: actionsx/prettier@v3
-        with:
-          args: --check .
+        # uses: actionsx/prettier@v3
+        # with:
+          # args: --check .
+        run: |
+          npm ci
+          npx prettier --check .
