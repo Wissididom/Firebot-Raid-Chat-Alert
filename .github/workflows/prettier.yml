@@ -16,7 +16,7 @@ jobs:
       - name: Prettier
         # uses: actionsx/prettier@v3
         # with:
-          # args: --check .
+        # args: --check .
         run: |
           npm ci
           npx prettier --check .
