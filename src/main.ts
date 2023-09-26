@@ -3,6 +3,12 @@ import * as WebSocket from "ws";
 import axios from "axios";
 
 const CLIENT_ID = "umhhyrvkdriayr0psc3ttmsnq2j8h0";
+const EVENTSUB_WSS_URL = "wss://eventsub.wss.twitch.tv/ws";
+const EVENTSUB_SUB_URL = "https://api.twitch.tv/helix/eventsub/subscriptions";
+//const EVENTSUB_WSS_URL = "ws://localhost:8080/ws";
+//const EVENTSUB_SUB_URL = "http://localhost:8080/eventsub/subscriptions";
+
+let alreadySubscribedToEvent = false;
 
 interface Params {
   message: string;
@@ -48,23 +54,26 @@ const script: Firebot.CustomScript<Params> = {
           script.run(runRequest);
       }
     }, 1000);
-    let client = new WebSocket("wss://eventsub.wss.twitch.tv/ws");
-    client.onopen = (event) => {
+    let client = new WebSocket(EVENTSUB_WSS_URL);
+    let onopen = (event: any) => {
       logger.info("[Firebot Raid Chat Alert] EventSub connection established!");
     };
-    client.onmessage = async (event: any) => {
+    let onmessage = async (event: any) => {
       let data = JSON.parse(event.data);
       if (data.metadata?.message_type == "session_welcome") {
         logger.info(
           "[Firebot Raid Chat Alert] session_welcome: " + JSON.stringify(data),
         );
+        if (alreadySubscribedToEvent) {
+          return;
+        }
         let id = data.payload.session.id;
         keepaliveTimeoutSeconds.interval =
           data.payload.session.keepalive_timeout_seconds;
         // https://dev.twitch.tv/docs/api/reference/#create-eventsub-subscription
         await axios({
           method: "POST",
-          url: "https://api.twitch.tv/helix/eventsub/subscriptions",
+          url: EVENTSUB_SUB_URL,
           headers: {
             "Client-ID": CLIENT_ID,
             Authorization: `Bearer ${runRequest.firebot.accounts.streamer.auth.access_token}`,
@@ -105,11 +114,23 @@ const script: Firebot.CustomScript<Params> = {
               logger.error("Error", err.message);
             }
           });
+        alreadySubscribedToEvent = true;
       } else if (data.metadata?.message_type == "session_keepalive") {
         logger.info(
           "[Firebot Raid Chat Alert] session_keepalive: " +
             JSON.stringify(data),
         );
+      } else if (data.metadata?.message_type == "session_reconnect") {
+        logger.info(
+          "[Firebot Raid Chat Alert] session_reconnect: " +
+            JSON.stringify(data),
+        );
+        logger.info(
+          `[Firebot Raid Chat Alert] Reconnecting to ${data.payload.session.reconnect_url}`,
+        );
+        client = new WebSocket(data.payload.session.reconnect_url);
+        client.onopen = onopen;
+        client.onmessage = onmessage;
       } else if (data.payload?.subscription?.type == "channel.raid") {
         logger.info(
           "[Firebot Raid Chat Alert] channel.raid: " + JSON.stringify(data),
@@ -188,6 +209,8 @@ const script: Firebot.CustomScript<Params> = {
       keepaliveTimeoutSeconds.end =
         keepaliveTimeoutSeconds.start + keepaliveTimeoutSeconds.interval;
     };
+    client.onopen = onopen;
+    client.onmessage = onmessage;
   },
 };
 
