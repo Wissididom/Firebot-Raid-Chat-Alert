@@ -1,9 +1,9 @@
-# Starter Firebot Custom Script in Typescript
+# Firebot Raid Chat Alert Custom Script
 
 ### Setup
 
-1. Create a new repo based off this template (Click "Use this Template" above) or simply fork it
-2. `npm install`
+1. `git clone https://github.com/Wissididom/Firebot-Raid-Chat-Alert.git`
+2. `npm install` or `npm i`
 
 ### Building
 
@@ -27,4 +27,5 @@ Release:
 ### API Infos
 
 [Firebotpy Source Code](https://github.com/dadthegamer/Firebotpy/blob/main/Firebot.py)
+
 [API Documentation](https://github.com/crowbartools/Firebot/wiki/API-Documentation)
