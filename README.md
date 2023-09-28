@@ -2,7 +2,7 @@
 
 ### Setup
 
-1. `git clone https://github.com/Wissididom/Firebot-Raid-Chat-Alert.git`
+1. `git clone https://github.com/Wissididom/Firebot-Raid-Chat-Alert.git` or just download the repo and cd into it.
 2. `npm install` or `npm i`
 
 ### Building
