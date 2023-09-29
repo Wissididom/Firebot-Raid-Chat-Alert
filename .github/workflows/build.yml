@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          npm ci
+      - name: Build
+        run: |
+          npm run build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: raid-chat-alert.js # TODO: Read from package.json
+          path: dist/raid-chat-alert.js
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'))
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # allows for tags access
+
+      - uses: actions/download-artifact@v3
+        name: Download compiled JS file
+        with:
+          name: raid-chat-alert.js # TODO: Read from package.json
+          path: release-artifacts/
+
+      - name: Create release
+        uses: ncipollo/release-action@v1.13.0
+        with:
+          replacesArtifacts: true
+          allowUpdates: true
+          artifactErrorsFailBuild: true
+          artifacts: "release-artifacts/*"
+          body: ${{ github.event.head_commit.message }}
+          prerelease: true
+          name: Nightly Release
+          tag: nightly-build
+
+      - name: Update nightly-build tag
+        run: |
+          git tag -f nightly-build
+          git push -f origin nightly-build
+        shell: bash
