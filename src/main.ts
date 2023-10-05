@@ -9,6 +9,7 @@ const EVENTSUB_SUB_URL = "https://api.twitch.tv/helix/eventsub/subscriptions";
 //const EVENTSUB_SUB_URL = "http://localhost:8080/eventsub/subscriptions";
 
 let alreadySubscribedToEvent = false;
+let exponentialBackoff = 0;
 
 interface Params {
   message: string;
@@ -57,6 +58,7 @@ const script: Firebot.CustomScript<Params> = {
     let client = new WebSocket(EVENTSUB_WSS_URL);
     let onopen = (event: any) => {
       logger.info("[Firebot Raid Chat Alert] EventSub connection established!");
+      exponentialBackoff = 0;
     };
     let onmessage = async (event: any) => {
       let data = JSON.parse(event.data);
@@ -131,6 +133,7 @@ const script: Firebot.CustomScript<Params> = {
         client = new WebSocket(data.payload.session.reconnect_url);
         client.onopen = onopen;
         client.onmessage = onmessage;
+        client.onclose = onclose;
       } else if (data.payload?.subscription?.type == "channel.raid") {
         logger.info(
           "[Firebot Raid Chat Alert] channel.raid: " + JSON.stringify(data),
@@ -209,8 +212,26 @@ const script: Firebot.CustomScript<Params> = {
       keepaliveTimeoutSeconds.end =
         keepaliveTimeoutSeconds.start + keepaliveTimeoutSeconds.interval;
     };
+    let onclose = (event: any) => {
+      logger.info("[Firebot Raid Chat Alert] EventSub connection closed!");
+      if (!event.wasClean) {
+        logger.info(
+          "[Firebot Raid Chat Alert] Connection didn't close in a clean manner! Maybe just the connection was lost! Trying to reconnect... (including exponential backoff)",
+        );
+        alreadySubscribedToEvent = false;
+        if (exponentialBackoff == 0) {
+          script.run(runRequest);
+        } else {
+          setTimeout(() => {
+            script.run(runRequest);
+          }, exponentialBackoff);
+        }
+        exponentialBackoff += 100;
+      }
+    };
     client.onopen = onopen;
     client.onmessage = onmessage;
+    client.onclose = onclose;
   },
 };
 
