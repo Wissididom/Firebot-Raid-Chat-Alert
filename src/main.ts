@@ -12,7 +12,7 @@ let alreadySubscribedToEvent = false;
 
 interface Params {
   message: string;
-  sendAs: string; // maybe [] as type, but string should work I think.
+  sendAs: [];
 }
 
 const script: Firebot.CustomScript<Params> = {
