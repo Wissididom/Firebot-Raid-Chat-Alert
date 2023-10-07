@@ -13,6 +13,7 @@ let exponentialBackoff = 0;
 
 interface Params {
   message: string;
+  sendAs: [];
 }
 
 const script: Firebot.CustomScript<Params> = {
@@ -36,6 +37,13 @@ const script: Firebot.CustomScript<Params> = {
         description: "Format",
         secondaryDescription:
           "The Format you want the message to look like when posting to chat. Allowed Variables: <from_broadcaster_user_id>, <from_broadcaster_user_login>, <from_broadcaster_user_name>, <to_broadcaster_user_id>, <to_broadcaster_user_login>, <to_broadcaster_user_name>, <viewers>",
+      },
+      sendAs: {
+        type: "enum",
+        default: "Bot",
+        description: "Send the chat message as",
+        secondaryDescription: "'Bot' has no effect if no bot user is set up",
+        options: ["Streamer", "Bot"],
       },
     };
   },
@@ -164,7 +172,8 @@ const script: Firebot.CustomScript<Params> = {
             data.payload.event.to_broadcaster_user_name,
           )
           .replace("<viewers>", data.payload.event.viewers);
-        logger.info(`Raid-Message: ${message}`);
+        let sendAs = runRequest.parameters.sendAs;
+        logger.info(`Raid-Message: ${message} (Send As: ${sendAs})`);
         await axios({
           method: "POST",
           url: "http://localhost:7472/api/v1/effects",
@@ -172,9 +181,8 @@ const script: Firebot.CustomScript<Params> = {
             effects: {
               list: [
                 {
-                  chatter: "bot", // or "streamer"
+                  chatter: sendAs,
                   type: "firebot:chat",
-                  active: "true",
                   message,
                 },
               ],
