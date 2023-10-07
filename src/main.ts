@@ -221,7 +221,9 @@ const script: Firebot.CustomScript<Params> = {
         keepaliveTimeoutSeconds.start + keepaliveTimeoutSeconds.interval;
     };
     let onclose = (event: any) => {
-      logger.info("[Firebot Raid Chat Alert] EventSub connection closed!");
+      logger.info(
+        `[Firebot Raid Chat Alert] EventSub connection closed! (Code: ${event.code}; Reason: ${event.reason})`,
+      );
       if (!event.wasClean) {
         logger.info(
           "[Firebot Raid Chat Alert] Connection didn't close in a clean manner! Maybe just the connection was lost! Trying to reconnect... (including exponential backoff)",
