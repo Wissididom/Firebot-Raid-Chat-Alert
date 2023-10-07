@@ -142,6 +142,7 @@ const script: Firebot.CustomScript<Params> = {
         client.onopen = onopen;
         client.onmessage = onmessage;
         client.onclose = onclose;
+        client.onerror = onerror;
       } else if (data.payload?.subscription?.type == "channel.raid") {
         logger.info(
           "[Firebot Raid Chat Alert] channel.raid: " + JSON.stringify(data),
@@ -226,22 +227,27 @@ const script: Firebot.CustomScript<Params> = {
       );
       if (!event.wasClean) {
         logger.info(
-          "[Firebot Raid Chat Alert] Connection didn't close in a clean manner! Maybe just the connection was lost! Trying to reconnect... (including exponential backoff)",
+          `[Firebot Raid Chat Alert] Connection didn't close in a clean manner! Maybe just the connection was lost! Trying to reconnect... (exponential backoff: ${exponentialBackoff})`,
         );
         alreadySubscribedToEvent = false;
         if (exponentialBackoff == 0) {
           script.run(runRequest);
+          exponentialBackoff = 100;
         } else {
           setTimeout(() => {
             script.run(runRequest);
           }, exponentialBackoff);
         }
-        exponentialBackoff += 100;
+        exponentialBackoff *= 2;
       }
+    };
+    let onerror = (event: any) => {
+      logger.info(`[Firebot Raid Chat Alert] EventSub connection errored!`);
     };
     client.onopen = onopen;
     client.onmessage = onmessage;
     client.onclose = onclose;
+    client.onerror = onerror;
   },
 };
 
