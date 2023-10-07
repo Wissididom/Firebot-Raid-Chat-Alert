@@ -39,11 +39,9 @@ const script: Firebot.CustomScript<Params> = {
       },
       sendAs: {
         type: "enum",
-        default:
-          "Bot",
+        default: "Bot",
         description: "Send the chat message as",
-        secondaryDescription:
-          "'Bot' has no effect if no bot user is set up",
+        secondaryDescription: "'Bot' has no effect if no bot user is set up",
         options: ["Streamer", "Bot"],
       },
     };
