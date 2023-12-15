@@ -20,7 +20,7 @@ jobs:
         run: |
           npm run build
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: raid-chat-alert.js # TODO: Read from package.json
           path: dist/raid-chat-alert.js
