@@ -9,8 +9,8 @@
     "build:dev": "npm run build && npm run copy",
     "copy": "node ./scripts/copy-build.js",
     "test": "jest",
-    "format": "npx prettier --write .",
-    "check-format": "npx prettier --check ."
+    "format": "prettier --write .",
+    "check-format": "prettier --check ."
   },
   "author": "Wissididom",
   "license": "MIT",
