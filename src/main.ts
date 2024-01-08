@@ -1,4 +1,4 @@
-import { Firebot } from "@crowbartools/firebot-custom-scripts-types";
+import { EnumParameter, Firebot, StringParameter } from "@crowbartools/firebot-custom-scripts-types";
 import * as WebSocket from "ws";
 import axios from "axios";
 
@@ -13,7 +13,7 @@ let exponentialBackoff = 0;
 
 interface Params {
   message: string;
-  sendAs: [];
+  sendAs: ("streamer" | "bot")[];
 }
 
 const script: Firebot.CustomScript<Params> = {
@@ -43,7 +43,7 @@ const script: Firebot.CustomScript<Params> = {
         default: "Bot",
         description: "Send the chat message as",
         secondaryDescription: "'Bot' has no effect if no bot user is set up",
-        options: ["Streamer", "Bot"],
+        options: ["streamer", "bot"],
       },
     };
   },
@@ -175,43 +175,7 @@ const script: Firebot.CustomScript<Params> = {
           .replace("<viewers>", data.payload.event.viewers);
         let sendAs = runRequest.parameters.sendAs;
         logger.info(`Raid-Message: ${message} (Send As: ${sendAs})`);
-        await axios({
-          method: "POST",
-          url: "http://localhost:7472/api/v1/effects",
-          data: {
-            effects: {
-              list: [
-                {
-                  chatter: sendAs,
-                  type: "firebot:chat",
-                  message,
-                },
-              ],
-            },
-          },
-        })
-          .then(async (res) => {
-            if (res.status != 200) {
-              logger.info(JSON.stringify(res.data)); // Actually json but logger.info only accepts strings
-            }
-          })
-          .catch((err) => {
-            if (err.response) {
-              // The request was made and the server responded with a status code
-              // that falls out of the range of 2xx
-              logger.error(err.response.data);
-              logger.error(err.response.status);
-              logger.error(err.response.headers);
-            } else if (err.request) {
-              // The request was made but no response was received
-              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-              // http.ClientRequest in node.js
-              logger.error(err.request);
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              logger.error("Error", err.message);
-            }
-          });
+        await runRequest.modules.twitchChat.sendChatMessage(message, null, sendAs);
       } else {
         logger.info(
           "[Firebot Raid Chat Alert] EventSub Data: " + JSON.stringify(data),

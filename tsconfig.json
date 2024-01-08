@@ -7,7 +7,6 @@
     "noImplicitAny": true,
     "sourceMap": true,
     "moduleResolution": "node",
-    "experimentalDecorators": true,
     "downlevelIteration": true
   },
   "include": ["./src/**/*"]
