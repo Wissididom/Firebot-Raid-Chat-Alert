@@ -1,8 +1,7 @@
 import { Firebot } from "@crowbartools/firebot-custom-scripts-types";
 import * as WebSocket from "ws";
-import axios from "axios";
 
-const CLIENT_ID = "umhhyrvkdriayr0psc3ttmsnq2j8h0";
+const CLIENT_ID = "vsmi5406a96n0pfueefttu1ie8odgj";
 const EVENTSUB_WSS_URL = "wss://eventsub.wss.twitch.tv/ws";
 const EVENTSUB_SUB_URL = "https://api.twitch.tv/helix/eventsub/subscriptions";
 //const EVENTSUB_WSS_URL = "ws://localhost:8080/ws";
@@ -81,49 +80,17 @@ const script: Firebot.CustomScript<Params> = {
         keepaliveTimeoutSeconds.interval =
           data.payload.session.keepalive_timeout_seconds;
         // https://dev.twitch.tv/docs/api/reference/#create-eventsub-subscription
-        await axios({
-          method: "POST",
-          url: EVENTSUB_SUB_URL,
-          headers: {
-            "Client-ID": CLIENT_ID,
-            Authorization: `Bearer ${runRequest.firebot.accounts.streamer.auth.access_token}`,
-            "Content-Type": "application/json",
+        let apiClient = runRequest.modules.twitchApi.getClient();
+        await apiClient.eventSub.createSubscription(
+          "channel.raid",
+          "1",
+          {
+            from_broadcaster_user_id:
+              runRequest.firebot.accounts.streamer.userId,
           },
-          data: {
-            type: "channel.raid",
-            version: "1",
-            condition: {
-              from_broadcaster_user_id:
-                runRequest.firebot.accounts.streamer.userId,
-            },
-            transport: {
-              method: "websocket",
-              session_id: id,
-            },
-          },
-        })
-          .then(async (res) => {
-            if (res.status != 202) {
-              logger.info(JSON.stringify(res.data)); // Actually json but logger.info only accepts strings
-            }
-          })
-          .catch((err) => {
-            if (err.response) {
-              // The request was made and the server responded with a status code
-              // that falls out of the range of 2xx
-              logger.error(err.response.data);
-              logger.error(err.response.status);
-              logger.error(err.response.headers);
-            } else if (err.request) {
-              // The request was made but no response was received
-              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-              // http.ClientRequest in node.js
-              logger.error(err.request);
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              logger.error("Error", err.message);
-            }
-          });
+          { method: "websocket", session_id: id },
+          runRequest.firebot.accounts.streamer.userId,
+        );
         alreadySubscribedToEvent = true;
       } else if (data.metadata?.message_type == "session_keepalive") {
         logger.info(
