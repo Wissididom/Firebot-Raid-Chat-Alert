@@ -1,11 +1,7 @@
 import { Firebot } from "@crowbartools/firebot-custom-scripts-types";
 import * as WebSocket from "ws";
 
-const CLIENT_ID = "vsmi5406a96n0pfueefttu1ie8odgj";
 const EVENTSUB_WSS_URL = "wss://eventsub.wss.twitch.tv/ws";
-const EVENTSUB_SUB_URL = "https://api.twitch.tv/helix/eventsub/subscriptions";
-//const EVENTSUB_WSS_URL = "ws://localhost:8080/ws";
-//const EVENTSUB_SUB_URL = "http://localhost:8080/eventsub/subscriptions";
 
 let alreadySubscribedToEvent = false;
 let exponentialBackoff = 0;
