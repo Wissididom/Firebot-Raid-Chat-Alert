@@ -1,4 +1,4 @@
-import { EnumParameter, Firebot, StringParameter } from "@crowbartools/firebot-custom-scripts-types";
+import { Firebot } from "@crowbartools/firebot-custom-scripts-types";
 import * as WebSocket from "ws";
 import axios from "axios";
 
@@ -40,7 +40,7 @@ const script: Firebot.CustomScript<Params> = {
       },
       sendAs: {
         type: "enum",
-        default: "Bot",
+        default: "bot",
         description: "Send the chat message as",
         secondaryDescription: "'Bot' has no effect if no bot user is set up",
         options: ["streamer", "bot"],
@@ -175,7 +175,11 @@ const script: Firebot.CustomScript<Params> = {
           .replace("<viewers>", data.payload.event.viewers);
         let sendAs = runRequest.parameters.sendAs;
         logger.info(`Raid-Message: ${message} (Send As: ${sendAs})`);
-        await runRequest.modules.twitchChat.sendChatMessage(message, null, sendAs);
+        await runRequest.modules.twitchChat.sendChatMessage(
+          message,
+          null,
+          sendAs,
+        );
       } else {
         logger.info(
           "[Firebot Raid Chat Alert] EventSub Data: " + JSON.stringify(data),
