@@ -23,9 +23,3 @@ Release:
 
 - Keep the script definition object (that contains the `run`, `getScriptManifest`, and `getDefaultParameters` funcs) in the `main.ts` file as it's important those function names don't get minimized.
 - Edit the `"scriptOutputName"` property in `package.json` to change the filename of the outputted script.
-
-### API Infos
-
-[Firebotpy Source Code](https://github.com/dadthegamer/Firebotpy/blob/main/Firebot.py)
-
-[API Documentation](https://github.com/crowbartools/Firebot/wiki/API-Documentation)
