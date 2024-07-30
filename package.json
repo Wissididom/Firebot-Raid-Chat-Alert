@@ -27,7 +27,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@types/ws": "^8.5.11",
+    "@types/ws": "^8.5.12",
     "bufferutil": "^4.0.8",
     "utf-8-validate": "^6.0.4",
     "ws": "^8.18.0"
