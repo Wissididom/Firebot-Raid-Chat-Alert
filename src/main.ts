@@ -8,7 +8,7 @@ let exponentialBackoff = 0;
 
 interface Params {
   message: string;
-  sendAs: ("streamer" | "bot")[];
+  sendAs: "streamer" | "bot";
 }
 
 const script: Firebot.CustomScript<Params> = {
@@ -29,16 +29,15 @@ const script: Firebot.CustomScript<Params> = {
         type: "string",
         default:
           "<to_broadcaster_user_name>: https://www.twitch.tv/<to_broadcaster_user_login>",
-        description: "Format",
-        secondaryDescription:
+        title: "Format",
+        description:
           "The Format you want the message to look like when posting to chat. Allowed Variables: <from_broadcaster_user_id>, <from_broadcaster_user_login>, <from_broadcaster_user_name>, <to_broadcaster_user_id>, <to_broadcaster_user_login>, <to_broadcaster_user_name>, <viewers>",
       },
       sendAs: {
-        type: "enum",
-        default: "bot",
-        description: "Send the chat message as",
-        secondaryDescription: "'bot' has no effect if no bot user is set up",
-        options: ["streamer", "bot"],
+        type: "chatter-select",
+        default: "Bot",
+        title: "Send the chat message as",
+        description: "'Bot' has no effect if no bot user is set up",
       },
     };
   },
