@@ -34,10 +34,11 @@ const script: Firebot.CustomScript<Params> = {
           "The Format you want the message to look like when posting to chat. Allowed Variables: <from_broadcaster_user_id>, <from_broadcaster_user_login>, <from_broadcaster_user_name>, <to_broadcaster_user_id>, <to_broadcaster_user_login>, <to_broadcaster_user_name>, <viewers>",
       },
       sendAs: {
-        type: "chatter-select",
+        type: "enum",
         default: "Bot",
         title: "Send the chat message as",
         description: "'Bot' has no effect if no bot user is set up",
+        options: ["Bot", "Streamer"],
       },
     };
   },
