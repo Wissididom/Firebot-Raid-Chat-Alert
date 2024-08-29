@@ -2,7 +2,7 @@
   "name": "firebot-raid-chat-alert",
   "scriptOutputName": "raid-chat-alert",
   "version": "1.0.0",
-  "description": "A starter Firebot custom script",
+  "description": "A Firebot custom script that enables the bot to notify about outgoing raids in chat",
   "main": "",
   "scripts": {
     "build": "webpack",
