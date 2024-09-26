@@ -2,7 +2,7 @@
 
 ## Deprecated
 
-There now is an event for outgoing raids inbuilt into Firebot so this is not needed anymore, as soon as a new version came out, so when that happens this repo will get deprecated and archived.
+There now is an event for outgoing raids inbuilt into Firebot so this is not needed anymore, therefore this repo was archived.
 
 ### Setup
 
