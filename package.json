@@ -8,7 +8,6 @@
     "build": "webpack",
     "build:dev": "npm run build && npm run copy",
     "copy": "node ./scripts/copy-build.js",
-    "test": "jest",
     "format": "prettier --write .",
     "check-format": "prettier --check ."
   },
