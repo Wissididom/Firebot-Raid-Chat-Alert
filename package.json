@@ -15,7 +15,7 @@
   "license": "MIT",
   "devDependencies": {
     "@crowbartools/firebot-custom-scripts-types": "^5.63.0",
-    "@types/node": "^22.9.3",
+    "@types/node": "^22.10.0",
     "prettier": "^3.3.3",
     "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
