@@ -16,7 +16,7 @@
   "devDependencies": {
     "@crowbartools/firebot-custom-scripts-types": "^5.63.1",
     "@types/node": "^22.10.1",
-    "prettier": "^3.4.1",
+    "prettier": "^3.4.2",
     "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
     "typescript": "^5.7.2",
