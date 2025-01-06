@@ -1,5 +1,9 @@
 # Firebot Raid Chat Alert Custom Script
 
+## Deprecated
+
+There now is an event for outgoing raids inbuilt into Firebot so this is not needed anymore, therefore this repo was archived.
+
 ### Setup
 
 1. `git clone https://github.com/Wissididom/Firebot-Raid-Chat-Alert.git` or just download the repo and cd into it.

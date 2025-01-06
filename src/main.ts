@@ -17,6 +17,8 @@ const script: Firebot.CustomScript<Params> = {
       name: "Firebot Raid Chat Alert",
       description:
         "A custom script to post the raid target in chat on an outgoing raid. Only needed as long as the Trigger does not exist inbuilt into Firebot",
+      secondaryDescription:
+        "This script is deprecated, use the inbuilt event `Outgoing Raid` of Firebot",
       author: "Wissididom",
       version: "1.0",
       firebotVersion: "5",
