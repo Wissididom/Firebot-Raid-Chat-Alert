@@ -18,7 +18,7 @@
     "@types/node": "^26.6.5",
     "prettier": "^3.9.10",
     "terser-webpack-plugin": "^5.6.1",
-    "ts-loader": "^9.5.2",
+    "ts-loader": "^9.6.2",
     "typescript": "^5.8.3",
     "webpack": "^5.112.0",
     "webpack-cli": "^7.2.3"
