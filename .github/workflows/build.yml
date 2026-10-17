@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Install dependencies
         run: |
           npm ci
@@ -20,7 +20,7 @@ jobs:
         run: |
           npm run build
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: raid-chat-alert.js # TODO: Read from package.json
           path: dist/raid-chat-alert.js
@@ -31,18 +31,18 @@ jobs:
     if: (github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'))
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # allows for tags access
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         name: Download compiled JS file
         with:
           name: raid-chat-alert.js # TODO: Read from package.json
           path: release-artifacts/
 
       - name: Create release
-        uses: ncipollo/release-action@v1.16.0
+        uses: ncipollo/release-action@v1.21.0
         with:
           replacesArtifacts: true
           allowUpdates: true
