@@ -1,5 +1,8 @@
 name: Prettier Formatting
 
+permissions:
+  contents: "read"
+
 on:
   push:
     branches: ["master", "main"]
