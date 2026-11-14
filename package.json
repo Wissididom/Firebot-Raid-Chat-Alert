@@ -28,5 +28,9 @@
     "bufferutil": "^4.2.0",
     "utf-8-validate": "^6.0.6",
     "ws": "^8.22.1"
+  },
+  "allowScripts": {
+    "bufferutil@4.2.0": true,
+    "utf-8-validate@6.0.6": true
   }
 }
